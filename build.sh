@@ -65,7 +65,7 @@ function check_port() {
 # get configuration from target connected to host machine
 function get_target_info() {
 	rm -rf ./out
-	python ${ESPTOOL} flash_id >./out
+	python3 ${ESPTOOL} flash_id >./out
 	TARGET="$(grep 'Detecting chip type...' ./out | awk '{print $4}')"
 	TARGET_FLASH_SIZE="$(grep 'Detected flash size:' ./out | awk '{print $4}')"
 	TARGET_FLASH_FREQ="$(grep 'Crystal is' ./out | awk '{print $3}')"
@@ -249,7 +249,7 @@ i | -i | info)
 	[ -d "build" -a -f "${PARTITION_FILE}" ] && print_partition_info
 	;;
 I | -I)
-	python ${ESPTOOL} --chip $CHIP --port ${PORT} --baud ${BAUD} flash_id
+	python3 ${ESPTOOL} --chip $CHIP --port ${PORT} --baud ${BAUD} flash_id
 	;;
 p | -p | partition)
 	print_partition_info
@@ -309,7 +309,7 @@ convertCSV | -convertCSV)
 		LOG_E "${IN_FILE} is not exist"
 		exit
 	}
-	python ${PARTITION_TOOL} --verify ${IN_FILE} ${OUT_FILE} >./out 2>&1
+	python3 ${PARTITION_TOOL} --verify ${IN_FILE} ${OUT_FILE} >./out 2>&1
 	[ -n "$(grep Error out)" ] && {
 		cat ./out
 		rm -rf ./out
@@ -318,7 +318,7 @@ convertCSV | -convertCSV)
 	}
 	rm -rf ./out
 	LOG_I "Finished conver CSV to bin"
-	python ${PARTITION_TOOL} ${OUT_FILE}
+	python3 ${PARTITION_TOOL} ${OUT_FILE}
 	;;
 convertBin | -convertBin)
 	cd ${PROJECT}
@@ -328,7 +328,7 @@ convertBin | -convertBin)
 		LOG_E "${IN_FILE} is not exist"
 		exit
 	}
-	python ${PARTITION_TOOL} --verify ${IN_FILE} ${OUT_FILE}
+	python3 ${PARTITION_TOOL} --verify ${IN_FILE} ${OUT_FILE}
 	LOG_I "Finished conver Bin to CSV"
 	cat ${OUT_FILE}
 	;;
@@ -365,7 +365,7 @@ fo | -fo | flash_ota_data)
 		exit
 	}
 	LOG_W "Flashing ${OTA_INIT_FILE} to ${OTA_INIT_ADDR}"
-	python ${ESPTOOL} --chip $CHIP --port ${PORT} --baud ${BAUD} --before ${BEFORE_FLASH} --after ${AFTER_FLASH} write_flash -z --flash_mode ${FLASH_MODE} --flash_freq ${FLASH_FREQ} --flash_size ${FLASH_SIZE} ${OTA_INIT_ADDR} ${OTA_INIT_FILE}
+	python3 ${ESPTOOL} --chip $CHIP --port ${PORT} --baud ${BAUD} --before ${BEFORE_FLASH} --after ${AFTER_FLASH} write_flash -z --flash_mode ${FLASH_MODE} --flash_freq ${FLASH_FREQ} --flash_size ${FLASH_SIZE} ${OTA_INIT_ADDR} ${OTA_INIT_FILE}
 	LOG_I "Finished flash bootloader only"
 	;;
 fb | -fb | flash_boot)
@@ -388,7 +388,7 @@ fb | -fb | flash_boot)
 		BOOTLOADER_ADDRESS=${4}
 	}
 	LOG_W "Flashing ${BOOTLOADER_FILE} to ${BOOTLOADER_ADDRESS}"
-	python ${ESPTOOL} --chip $CHIP --port ${PORT} --baud ${BAUD} --before ${BEFORE_FLASH} --after ${AFTER_FLASH} write_flash -z --flash_mode ${FLASH_MODE} --flash_freq ${FLASH_FREQ} --flash_size ${FLASH_SIZE} ${BOOTLOADER_ADDRESS} ${BOOTLOADER_FILE}
+	python3 ${ESPTOOL} --chip $CHIP --port ${PORT} --baud ${BAUD} --before ${BEFORE_FLASH} --after ${AFTER_FLASH} write_flash -z --flash_mode ${FLASH_MODE} --flash_freq ${FLASH_FREQ} --flash_size ${FLASH_SIZE} ${BOOTLOADER_ADDRESS} ${BOOTLOADER_FILE}
 	LOG_I "Finished flash bootloader only"
 	;;
 fp | -fp | flash_ptable)
@@ -405,7 +405,7 @@ fp | -fp | flash_ptable)
 	print_info
 	print_partition_info
 	LOG_W "Flashing ${PARTITION_BIN} to ${PARTITION_ADDRESS}"
-	python ${ESPTOOL} --chip ${CHIP} --port ${PORT} --baud ${BAUD} --before ${BEFORE_FLASH} --after ${AFTER_FLASH} write_flash -z --flash_mode ${FLASH_MODE} --flash_freq ${FLASH_FREQ} --flash_size ${FLASH_SIZE} ${PARTITION_ADDRESS} ${PARTITION_BIN}
+	python3 ${ESPTOOL} --chip ${CHIP} --port ${PORT} --baud ${BAUD} --before ${BEFORE_FLASH} --after ${AFTER_FLASH} write_flash -z --flash_mode ${FLASH_MODE} --flash_freq ${FLASH_FREQ} --flash_size ${FLASH_SIZE} ${PARTITION_ADDRESS} ${PARTITION_BIN}
 	LOG_I "Finished flash partition table only"
 	;;
 fa | -fa | flash_app)
@@ -427,7 +427,7 @@ fa | -fa | flash_app)
 		MAIN_APP_ADDRESS=${4}
 	}
 	LOG_W "Flashing ${APP_FILE} to ${MAIN_APP_ADDRESS}"
-	python ${ESPTOOL} --chip ${CHIP} --port ${PORT} --baud ${BAUD} --before ${BEFORE_FLASH} --after ${AFTER_FLASH} write_flash -z --flash_mode ${FLASH_MODE} --flash_freq ${FLASH_FREQ} --flash_size ${FLASH_SIZE} ${MAIN_APP_ADDRESS} ${APP_FILE}
+	python3 ${ESPTOOL} --chip ${CHIP} --port ${PORT} --baud ${BAUD} --before ${BEFORE_FLASH} --after ${AFTER_FLASH} write_flash -z --flash_mode ${FLASH_MODE} --flash_freq ${FLASH_FREQ} --flash_size ${FLASH_SIZE} ${MAIN_APP_ADDRESS} ${APP_FILE}
 	LOG_I "Finished flash application only"
 	;;
 *)
